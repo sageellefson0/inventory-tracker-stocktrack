@@ -12,6 +12,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { collection, query, getDocs, doc, setDoc, deleteDoc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
+
 const style = {
   position: 'absolute',
   top: '50%',
@@ -131,6 +132,8 @@ export default function Home() {
     item.id.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+
+  // Begin visible code
   return (
     <ThemeProvider theme={theme}>
       <Box width="100vw" height="100vh" overflow={'hidden'}>
