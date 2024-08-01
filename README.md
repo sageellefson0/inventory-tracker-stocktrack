@@ -9,4 +9,7 @@ Typescrypt <br>
 Firebase <br>
 Deployed with Vercel<br>
 
-The application tracks item name, quantity and item type. StockTrack can create inventory items, modify items, add and remove quantities, and handle partial and full search queries. 
+### Features
+Add Items: Easily add new items using a pop up. Syncs with Firebase almost instantly. 
+Search Items: Quickly find items in the inventory using a search bar that accepts full are partial queries. 
+Remove Items: Remove all items from inventory, or remove 1 with convenient buttons located within the table.
