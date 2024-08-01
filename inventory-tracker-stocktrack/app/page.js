@@ -1,12 +1,12 @@
 "use client"
 import Modal from '@mui/material/Modal';
 import * as React from 'react';
-import {Box, Typography} from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import TextField from '@mui/material/TextField';
-import {Stack, Grid} from "@mui/material";
-import {firestore} from "@/firebase";
+import { Stack, Grid } from "@mui/material";
+import { firestore } from "@/firebase";
 import MenuItem from '@mui/material/MenuItem';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { collection, query, getDocs, doc, setDoc, deleteDoc, getDoc } from "firebase/firestore";
@@ -143,21 +143,21 @@ export default function Home() {
           </Typography>
         </Box>
         <Box display={"flex"} justifyContent={"center"} alignItems={"center"} flexDirection={'column'}>
-          <Box width={"1000px"} display={"inline-block"}  marginBottom={2}>
+          <Box width={"1000px"} display={"inline-block"} marginBottom={2}>
             <div>
-            <Grid container gap={3} justifyContent="flex-end">
-            <Button onClick={handleOpen} variant="outlined" startIcon={<AddIcon />}>Add Item</Button>
-              <Box>
-              <TextField
-                id="standard-search"
-                label="Search"
-                variant="outlined"
-                inputProps={{ style: { textTransform: 'capitalize' } }}
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </Box>
-            </Grid>
+              <Grid container gap={3} justifyContent="flex-end">
+                <Button onClick={handleOpen} variant="outlined" startIcon={<AddIcon />}>Add Item</Button>
+                <Box>
+                  <TextField
+                    id="standard-search"
+                    label="Search"
+                    variant="outlined"
+                    inputProps={{ style: { textTransform: 'capitalize' } }}
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                </Box>
+              </Grid>
 
               <Modal
                 open={open}
@@ -184,9 +184,18 @@ export default function Home() {
                       value={itemName}
                       onChange={(e) => setItemName(e.target.value)}
                     />
-                    <TextField id="standard-qty" label="Quantity" type="number" variant="standard"
+                    <TextField
+                      id="standard-qty"
+                      label="Quantity"
+                      type="number"
+                      variant="standard"
                       value={quantity}
-                      onChange={(e) => setQuantity(e.target.value)}
+                      onChange={(e) => {
+                        const value = Number(e.target.value);
+                        if (value >= 0) {
+                          setQuantity(value);
+                        }
+                      }}
                     />
                     <TextField
                       id="item-type"
@@ -202,15 +211,22 @@ export default function Home() {
                         </MenuItem>
                       ))}
                     </TextField>
-
-                    <Button variant="outlined" sx={{ border: '2px solid #8FB8DE' }} onClick={() => {
-                      addItem(itemName, itemType, quantity);
-                      setItemName('');
-                      setItemType('');
-                      setQuantity(1);
-                      handleClose();
-                    }}>
-                      <Typography variant="h6" gutterBottom color={'#2742AC'}>
+                    <Button
+                      variant="outlined"
+                      sx={{ border: '2px solid #8FB8DE' }}
+                      onClick={() => {
+                        if (!itemName || !itemType || quantity <= 0) {
+                          alert("Please fill out all fields correctly before saving. Quantity must be 1 or more.");
+                          return; // Prevent further execution
+                        }
+                        addItem(itemName, itemType, quantity);
+                        setItemName('');
+                        setItemType('');
+                        setQuantity(1); // Reset to default value
+                        handleClose();
+                      }}
+                    >
+                      <Typography variant="h6" gutterBottom color={'#2742AC'} paddingTop={'8px'}>
                         Save
                       </Typography>
                     </Button>
@@ -219,7 +235,7 @@ export default function Home() {
               </Modal>
             </div>
 
-        
+
           </Box>
 
           <Box width="1000px" height="70px" textAlign={'center'} bgcolor={'#8FB8DE'} padding={"15px"}>
@@ -242,7 +258,7 @@ export default function Home() {
             </Grid>
             <Stack spacing={2}>
               {filteredInventory.map((i) => (
-              <Grid container spacing={2} key={i.id} sx={{ bgcolor: 'lightgray', padding: '20px', '& > .MuiGrid-item': { padding: '0' } }} alignItems="center">
+                <Grid container spacing={2} key={i.id} sx={{ bgcolor: 'lightgray', padding: '20px', '& > .MuiGrid-item': { padding: '0' } }} alignItems="center">
                   <Grid item xs={2} textAlign="center">
                     <Typography>{i.id}</Typography>
                   </Grid>
@@ -265,7 +281,7 @@ export default function Home() {
           </Box>
         </Box>
         <Box bgcolor={'lightgray'} padding={"30px"} textAlign={'center'} bottom={0} position={'absolute'} width={'100%'}>
-          Stock Track © 2024 | All rights reserved.
+          StockTrack © 2024 | All rights reserved.
         </Box>
       </Box>
     </ThemeProvider>
