@@ -19,12 +19,15 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 500,
-  height: 500,
+  width: '90vw', 
+  maxWidth: 500, 
+  height: 'auto', 
   bgcolor: 'background.paper',
   border: '2px solid #8FB8DE',
   boxShadow: 24,
   p: 4,
+  overflow: 'auto', 
+  maxHeight: '80vh', 
 };
 
 // Sets the type of item
@@ -54,6 +57,15 @@ const theme = createTheme({
     lightblue: {
       main: '#8FB8DE',
       contrastText: '#000',
+    },
+  },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 960,
+      lg: 1280,
+      xl: 1920,
     },
   },
 });
@@ -146,13 +158,32 @@ export default function Home() {
   return (
     <ThemeProvider theme={theme}>
       <Box width="100vw" height="100vh" overflow={'hidden'}>
-        <Box component="section" width="275px" margin="15px" height="92px" sx={{ p: 2, border: '2px dashed #8FB8DE' }}>
-          <Typography variant="h3" gutterBottom color={'#2742AC'}>
+        <Box 
+          component="section" 
+          width="275px" 
+          margin="15px" 
+          height="92px" 
+          sx={{ 
+            p: 2, 
+            border: '2px dashed #8FB8DE', 
+            display: 'flex', 
+            justifyContent: 'center',
+            [theme.breakpoints.up('sm')]: {
+              justifyContent: 'flex-start'
+            }
+          }}
+        >
+          <Typography 
+            variant="h3" 
+            gutterBottom 
+            color={'#2742AC'} 
+            textAlign="center"
+          >
             StockTrack
           </Typography>
         </Box>
         <Box display={"flex"} justifyContent={"center"} alignItems={"center"} flexDirection={'column'}>
-          <Box width={"1000px"} display={"inline-block"} marginBottom={2}>
+          <Box width={"90vw"} maxWidth="1000px" display={"inline-block"} marginBottom={2}>
             <div>
               <Grid container gap={3} justifyContent="flex-end">
                 <Button onClick={handleOpen} variant="outlined" startIcon={<AddIcon />}>Add Item</Button>
@@ -184,7 +215,7 @@ export default function Home() {
                     marginTop={'30px'}
                     component="form"
                     sx={{
-                      '& > :not(style)': { m: 1, width: '25ch' },
+                      '& > :not(style)': { m: 1, width: '100%' }, 
                     }}
                     noValidate
                     autoComplete="off"
@@ -243,42 +274,46 @@ export default function Home() {
                 </Box>
               </Modal>
             </div>
-
-
           </Box>
-
-          <Box width="1000px" height="60px" textAlign={'center'} bgcolor={'#8FB8DE'} padding={"15px"}>
+          <Box width="90vw" maxWidth="1000px" height="60px" textAlign={'center'} bgcolor={'#8FB8DE'} padding={"15px"}>
             <Typography variant="h4" gutterBottom>
               Inventory
             </Typography>
           </Box>
 
-          <Box width="1000px" border={"solid 3px #8FB8DE"} minHeight="350px" maxHeight="350px" sx={{ overflowY: 'auto' }}>
-            <Grid container spacing={2} sx={{ mb: 2 }} paddingTop={'018px'}>
-              <Grid item xs={2.5} textAlign="center">
+          <Box 
+            width="90vw" 
+            maxWidth="1000px" 
+            border={"solid 3px #8FB8DE"} 
+            minHeight={{ xs: "400px", sm: "350px" }} 
+            maxHeight="380px" 
+            sx={{ overflowY: 'auto' }} 
+          >
+            <Grid container spacing={2} sx={{ mb: 2 }} paddingTop={'18px'}>
+              <Grid item xs={4} sm={2.5} textAlign="center">
                 <Typography variant="h6" color={'#2742AC'}>Item Name</Typography>
               </Grid>
-              <Grid item xs={1.5} textAlign="center">
+              <Grid item xs={4} sm={1.5} textAlign="center">
                 <Typography variant="h6" color={'#2742AC'}>Type</Typography>
               </Grid>
-              <Grid item xs={2.5} textAlign="center">
+              <Grid item xs={4} sm={2.5} textAlign="center">
                 <Typography variant="h6" color={'#2742AC'}>Quantity</Typography>
               </Grid>
             </Grid>
             <Stack spacing={2}>
               {filteredInventory.map((i) => (
                 <Grid container spacing={2} key={i.id} sx={{ bgcolor: 'lightgray', padding: '20px', '& > .MuiGrid-item': { padding: '0' } }} alignItems="center">
-                  <Grid item xs={2} textAlign="center">
+                  <Grid item xs={12} sm={2} textAlign="center">
                     <Typography>{i.id}</Typography>
                   </Grid>
-                  <Grid item xs={2} textAlign="center">
+                  <Grid item xs={12} sm={2} textAlign="center">
                     <Typography>{i.type}</Typography>
                   </Grid>
-                  <Grid item xs={2} textAlign="center">
+                  <Grid item xs={12} sm={2} textAlign="center">
                     <Typography>{i.count}</Typography>
                   </Grid>
-                  <Grid item xs={6} textAlign="center">
-                    <Box display="flex" gap={"15px"} height="100%" alignItems="center" justifyContent="center">
+                  <Grid item xs={12} sm={6} textAlign="center">
+                    <Box display="flex" gap={"5px"} height="100%" alignItems="center" justifyContent="center" flexWrap="wrap">
                       <Button color="darkblue" variant="contained" onClick={() => increaseItemQuantity(i.id)}>Add +1</Button>
                       <Button color="darkblue" variant="contained" onClick={() => removeItem(i.id)}>Remove -1</Button>
                       <Button color="darkblue" variant="contained" onClick={() => removeAllItems(i.id)}>Remove All</Button>
@@ -289,7 +324,7 @@ export default function Home() {
             </Stack>
           </Box>
         </Box>
-        <Box bgcolor={'lightgray'} padding={"25px"} textAlign={'center'} bottom={0} position={'absolute'} width={'100%'}>
+        <Box bgcolor={'lightgray'} padding={"20px"} textAlign={'center'} bottom={0} position={'absolute'} width={'100%'}>
           StockTrack © 2024 | All rights reserved.
         </Box>
       </Box>
