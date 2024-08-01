@@ -1,3 +1,4 @@
+// Imports
 "use client"
 import Modal from '@mui/material/Modal';
 import * as React from 'react';
@@ -12,7 +13,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { collection, query, getDocs, doc, setDoc, deleteDoc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
-
+// Sets style variable
 const style = {
   position: 'absolute',
   top: '50%',
@@ -26,7 +27,8 @@ const style = {
   p: 4,
 };
 
-const currencies = [
+// Sets the type of item
+const type = [
   {
     value: 'Perishable',
     label: 'Perishable',
@@ -37,10 +39,12 @@ const currencies = [
   },
 ];
 
+// Capitlizes the first letter when entering an item name
 const capitalizeFirstLetter = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+// Theme for background color of buttons 
 const theme = createTheme({
   palette: {
     darkblue: {
@@ -66,6 +70,7 @@ export default function Home() {
   const [itemType, setItemType] = useState("");
   const [quantity, setQuantity] = useState(1);
 
+  // Updates the inventory table in firebase
   const updateInventory = async () => {
     const snapshot = query(collection(firestore, 'inventory'));
     const docs = await getDocs(snapshot);
@@ -82,6 +87,7 @@ export default function Home() {
     updateInventory();
   }, []);
 
+  // Adds an item to firebase table
   const addItem = async (itemName, itemType, quantity) => {
     const capitalizedItemName = capitalizeFirstLetter(itemName);
     const docRef = await doc(collection(firestore, "inventory"), capitalizedItemName);
@@ -94,7 +100,8 @@ export default function Home() {
     }
     await updateInventory();
   }
-
+  
+  // Removes an item to firebase table
   const removeItem = async (itemName) => {
     const docRef = doc(collection(firestore, "inventory"), itemName);
     const docSnap = await getDoc(docRef);
@@ -109,6 +116,7 @@ export default function Home() {
     await updateInventory();
   }
 
+  // Removes all items from firebase table based on itemName
   const removeAllItems = async (itemName) => {
     const docRef = doc(collection(firestore, "inventory"), itemName);
     const docSnap = await getDoc(docRef);
@@ -118,6 +126,7 @@ export default function Home() {
     await updateInventory();
   }
 
+  // Adds additional quantity to an item to firebase based on itemName
   const increaseItemQuantity = async (itemName) => {
     const docRef = await doc(collection(firestore, "inventory"), itemName);
     const docSnap = await getDoc(docRef);
@@ -127,13 +136,13 @@ export default function Home() {
     }
     await updateInventory();
   }
-
+// Operates search query to find items in the table
   const filteredInventory = inventory.filter(item =>
     item.id.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
 
-  // Begin visible code
+  // Begin UI elements developed with MUI 
   return (
     <ThemeProvider theme={theme}>
       <Box width="100vw" height="100vh" overflow={'hidden'}>
@@ -205,7 +214,7 @@ export default function Home() {
                       value={itemType}
                       onChange={(e) => setItemType(e.target.value)}
                     >
-                      {currencies.map((option) => (
+                      {type.map((option) => (
                         <MenuItem key={option.value} value={option.value}>
                           {option.label}
                         </MenuItem>
@@ -226,7 +235,7 @@ export default function Home() {
                         handleClose();
                       }}
                     >
-                      <Typography variant="h6" gutterBottom color={'#2742AC'} paddingTop={'8px'}>
+                      <Typography variant="h7" gutterBottom color={'#2742AC'} paddingTop={'8px'}>
                         Save
                       </Typography>
                     </Button>
@@ -238,14 +247,14 @@ export default function Home() {
 
           </Box>
 
-          <Box width="1000px" height="70px" textAlign={'center'} bgcolor={'#8FB8DE'} padding={"15px"}>
+          <Box width="1000px" height="60px" textAlign={'center'} bgcolor={'#8FB8DE'} padding={"15px"}>
             <Typography variant="h4" gutterBottom>
               Inventory
             </Typography>
           </Box>
 
-          <Box width="1000px" border={"solid 3px #8FB8DE"} minHeight="400px" maxHeight="400px" sx={{ overflowY: 'auto' }}>
-            <Grid container spacing={2} sx={{ mb: 2 }} paddingTop={'20px'}>
+          <Box width="1000px" border={"solid 3px #8FB8DE"} minHeight="350px" maxHeight="350px" sx={{ overflowY: 'auto' }}>
+            <Grid container spacing={2} sx={{ mb: 2 }} paddingTop={'018px'}>
               <Grid item xs={2.5} textAlign="center">
                 <Typography variant="h6" color={'#2742AC'}>Item Name</Typography>
               </Grid>
@@ -280,7 +289,7 @@ export default function Home() {
             </Stack>
           </Box>
         </Box>
-        <Box bgcolor={'lightgray'} padding={"30px"} textAlign={'center'} bottom={0} position={'absolute'} width={'100%'}>
+        <Box bgcolor={'lightgray'} padding={"25px"} textAlign={'center'} bottom={0} position={'absolute'} width={'100%'}>
           StockTrack © 2024 | All rights reserved.
         </Box>
       </Box>
