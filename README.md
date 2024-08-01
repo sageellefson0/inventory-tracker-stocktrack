@@ -14,3 +14,5 @@ Deployed with Vercel using CI/CD<br>
 #### Add Items: Easily add new items using a pop up. Syncs with Firebase almost instantly. <br>
 #### Search Items: Quickly find items in the inventory using a search bar that accepts full are partial queries. <br>
 #### Remove Items: Remove all items from inventory, or remove 1 with convenient buttons located within the table.<br>
+
+![Image of StockTrack](https://postimg.cc/Zvm105pN)
