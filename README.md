@@ -4,10 +4,11 @@
 
 ### Developed with:
 Next.JS<br>
+React<br>
 MUI Core<br>
 Typescrypt <br>
 Firebase <br>
-Deployed with Vercel<br>
+Deployed with Vercel using CI/CD<br>
 
 ### Features
 #### Add Items: Easily add new items using a pop up. Syncs with Firebase almost instantly. <br>
